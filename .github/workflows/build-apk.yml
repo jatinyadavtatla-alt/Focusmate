@@ -17,9 +17,16 @@ jobs:
         with:
           distribution: temurin
           java-version: 17
-      - uses: android-actions/setup-android@v3
+      # GitHub's runners already include the Android SDK. We only need to accept its licenses so
+      # Gradle can download any missing platform/build-tools by itself.
+      - name: Accept Android SDK licenses
+        run: |
+          echo "ANDROID_HOME=$ANDROID_HOME"
+          SDKM=$(ls "$ANDROID_HOME"/cmdline-tools/*/bin/sdkmanager | head -1)
+          echo "Using $SDKM"
+          yes | "$SDKM" --licenses > /dev/null || true
       - run: npm ci --no-audit --no-fund
-      - name: Tests (logic + Kotlin type-check)
+      - name: Tests (logic + type-check)
         run: npm run typecheck && npm test
       - name: Build release APK
         working-directory: android
