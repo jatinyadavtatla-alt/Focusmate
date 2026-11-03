@@ -1,0 +1,4 @@
+<resources>
+  <string name="app_name">FocusMate</string>
+  <string name="accessibility_service_description">FocusMate uses this service to detect when distracting apps are opened during an active focus block and gently block them so you can stay in your flow.</string>
+</resources>
